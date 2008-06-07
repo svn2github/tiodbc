@@ -6,6 +6,13 @@
 
 namespace tiodbc
 {
+	// Current version
+	unsigned short version_major()		{	return 0;	}
+	unsigned short version_minor()		{	return 1;	}
+	unsigned short version_revision()	{	return 0;	}
+
+	//! @cond INTERNAL_FUNCTIONS
+
 	// Get an error of an ODBC handle
 	bool __get_error(SQLSMALLINT _handle_type, SQLHANDLE _handle, _tstring & _error_desc, _tstring & _status_code)
 	{	TCHAR status_code[256];
@@ -35,6 +42,14 @@ namespace tiodbc
 		return false;
 	}
 
+	//! @endcond
+
+	///////////////////////////////////////////////////////////////////////////////////
+	// CONNECTION IMPLEMENTATION
+	///////////////////////////////////////////////////////////////////////////////////
+
+	//! @cond INTERNAL_FUNCTIONS
+
 	// Allocate HENV and HDBC handles
 	void __allocate_handle(HENV & _env, HDBC & _conn)
 	{
@@ -47,6 +62,8 @@ namespace tiodbc
 		// A connection handle
 		SQLAllocHandle(SQL_HANDLE_DBC, _env, &_conn);	
 	}
+
+	//! @endcond
 
 
 	// Construct by data source
@@ -152,6 +169,188 @@ namespace tiodbc
 		return state;
 	}
 
+	///////////////////////////////////////////////////////////////////////////////////
+	// FIELD IMPLEMENTATION
+	///////////////////////////////////////////////////////////////////////////////////
+
+	//! @cond INTERNAL_FUNCTIONS
+
+	template<class T>
+	T __get_data(HSTMT _stmt, int _col, SQLSMALLINT _ttype, T error_value)
+	{	T tmp_storage;
+		SQLINTEGER cb_needed;
+		RETCODE rc;
+		rc = SQLGetData(_stmt, _col, _ttype, &tmp_storage, sizeof(tmp_storage), &cb_needed);
+		if (!TIODBC_SUCCESS_CODE(rc))
+			return error_value;
+		return tmp_storage;
+	}
+
+	//! @endcond
+
+	// Not direct contructable
+	field_impl::field_impl(HSTMT _stmt, int _col_num)
+		:stmt_h(_stmt),
+		col_num(_col_num)
+	{}
+
+	//! Destructor
+	field_impl::~field_impl()
+	{}
+
+	// Copy constructor
+	field_impl::field_impl(const field_impl & r)
+		:stmt_h(r.stmt_h),
+		col_num(r.col_num)
+	{
+	}
+
+	// Copy operator
+	field_impl & field_impl::operator=(const field_impl & r)
+	{	stmt_h = r.stmt_h;
+		col_num = r.col_num;
+		return *this;
+	}
+
+	// Get field as string
+	_tstring field_impl::as_string() const
+	{	SQLINTEGER sz_needed = 0;
+		TCHAR small_buff[256];
+		RETCODE rc;
+				
+		// Try with small buffer
+		rc = SQLGetData(stmt_h, col_num, SQL_C_TCHAR, small_buff, sizeof(small_buff), &sz_needed);
+		
+		if (TIODBC_SUCCESS_CODE(rc))
+			return _tstring(small_buff);
+		else if (sz_needed > 0)
+		{	// A bigger buffer is needed
+			SQLINTEGER sz_buff = sz_needed + 1;
+			std::auto_ptr<TCHAR> p_data(new TCHAR[sz_buff]);
+			SQLGetData(stmt_h, col_num, SQL_C_TCHAR, (SQLTCHAR *)p_data.get(), sz_buff, &sz_needed);
+			return _tstring(p_data.get());
+		}
+
+		return _tstring();	// Empty
+	}
+
+	// Get field as long
+	long field_impl::as_long() const
+	{	return __get_data<long>(stmt_h, col_num, SQL_C_SLONG, 0);
+	}
+
+	// Get field as unsigned long
+	unsigned long field_impl::as_unsigned_long() const
+	{	return __get_data<unsigned long>(stmt_h, col_num, SQL_C_ULONG, 0);
+	}
+
+	// Get field as double
+	double field_impl::as_double() const
+	{	return __get_data<double>(stmt_h, col_num, SQL_C_DOUBLE, 0);
+	}
+
+	// Get field as float
+	float field_impl::as_float() const
+	{	return __get_data<float>(stmt_h, col_num, SQL_C_FLOAT, 0);
+	}
+
+	// Get field as short
+	short field_impl::as_short() const
+	{	return __get_data<short>(stmt_h, col_num, SQL_C_SSHORT, 0);
+	}
+
+	// Get field as unsigned short
+	unsigned short field_impl::as_unsigned_short() const
+	{	return __get_data<unsigned short>(stmt_h, col_num, SQL_C_USHORT, 0);
+	}
+
+	///////////////////////////////////////////////////////////////////////////////////
+	// PARAM IMPLEMENTATION
+	///////////////////////////////////////////////////////////////////////////////////
+
+	//! @cond INTERNAL_FUNCTIONS
+	template <class T>
+	const T & __bind_param(HSTMT _stmt, int _parnum, SQLSMALLINT _ctype, SQLSMALLINT _sqltype, void * dst_buf, const T & _value)
+	{
+		// Save buffer internally
+		memcpy(dst_buf, &_value, sizeof(_value));
+
+		// Bind on internal buffer		
+		SQLINTEGER StrLenOrInPoint = 0;
+		SQLBindParameter(_stmt,
+			_parnum,
+			SQL_PARAM_INPUT,
+			_ctype,
+			_sqltype,
+			0,
+			0,
+			(SQLPOINTER *)dst_buf,
+			0,
+			&StrLenOrInPoint
+			);
+
+		return *(T *) dst_buf;
+	}
+
+	//! @endcond
+
+	// Constructor
+	param_impl::param_impl(HSTMT _stmt, int _par_num)
+		:stmt_h(_stmt),
+		par_num(_par_num)
+	{
+	}
+
+	// Copy constructor
+	param_impl::param_impl(const param_impl & r)
+		:stmt_h(r.stmt_h),
+		par_num(r.par_num)
+	{}
+
+	// Destructor
+	param_impl::~param_impl()
+	{}
+
+	// Copy operator
+	param_impl & param_impl::operator=(const param_impl & r)
+	{
+		stmt_h = r.stmt_h;
+		par_num = r.par_num;
+		return *this;
+	}
+
+	// Set as string
+	const _tstring & param_impl::set_as_string(const _tstring & _str)
+	{	// Save buffer internally
+		_int_string = _str;
+
+		// Bind on internal buffer		
+		_int_SLOIP = SQL_NTS;
+		SQLBindParameter(stmt_h,
+			par_num,
+			SQL_PARAM_INPUT,
+			SQL_C_TCHAR,
+			SQL_CHAR,
+			(SQLUINTEGER)_int_string.size(),
+			0,
+			(SQLPOINTER *)_int_string.c_str(),
+			(SQLINTEGER)_int_string.size()+1,
+			&_int_SLOIP);;
+
+		return _int_string;
+	}
+
+	// Set as string
+	const long & param_impl::set_as_long(const long & _value)
+	{	return __bind_param(stmt_h, par_num, SQL_C_SLONG, SQL_INTEGER, _int_buffer, _value);	}
+
+	// Set parameter as usigned long
+	const unsigned long & param_impl::set_as_unsigned_long(const unsigned long & _value)
+	{	return __bind_param(stmt_h, par_num, SQL_C_ULONG, SQL_INTEGER, _int_buffer, _value);	}
+
+	///////////////////////////////////////////////////////////////////////////////////
+	// STATEMENT IMPLEMENTATION
+	///////////////////////////////////////////////////////////////////////////////////
 
 	// Default constructor
 	statement::statement()
@@ -263,7 +462,7 @@ namespace tiodbc
 		return true;
 	}
 
-	//! Execute statement
+	// Execute statement
 	bool statement::execute()
 	{	RETCODE rc;
 		if (!is_open())
@@ -275,7 +474,7 @@ namespace tiodbc
 		return true;
 	}
 
-	//! Fetch next
+	// Fetch next
 	bool statement::fetch_next()
 	{	RETCODE rc;
 		if (!is_open())
@@ -342,170 +541,5 @@ namespace tiodbc
 
 		SQLFreeStmt(stmt_h, SQL_RESET_PARAMS);
 	}
-
-	template<class T>
-	T __get_data(HSTMT _stmt, int _col, SQLSMALLINT _ttype, T error_value)
-	{	T tmp_storage;
-		SQLINTEGER cb_needed;
-		RETCODE rc;
-		rc = SQLGetData(_stmt, _col, _ttype, &tmp_storage, sizeof(tmp_storage), &cb_needed);
-		if (!TIODBC_SUCCESS_CODE(rc))
-			return error_value;
-		return tmp_storage;
-	}
-
-	// Not direct contructable
-	field_impl::field_impl(HSTMT _stmt, int _col_num)
-		:stmt_h(_stmt),
-		col_num(_col_num)
-	{}
-
-	//! Destructor
-	field_impl::~field_impl()
-	{}
-
-	// Copy constructor
-	field_impl::field_impl(const field_impl & r)
-		:stmt_h(r.stmt_h),
-		col_num(r.col_num)
-	{
-	}
-
-	// Copy operator
-	field_impl & field_impl::operator=(const field_impl & r)
-	{	stmt_h = r.stmt_h;
-		col_num = r.col_num;
-		return *this;
-	}
-
-	// Get field as string
-	_tstring field_impl::as_string() const
-	{	SQLINTEGER sz_needed = 0;
-		TCHAR small_buff[256];
-		RETCODE rc;
-				
-		// Try with small buffer
-		rc = SQLGetData(stmt_h, col_num, SQL_C_TCHAR, small_buff, sizeof(small_buff), &sz_needed);
-		
-		if (TIODBC_SUCCESS_CODE(rc))
-			return _tstring(small_buff);
-		else if (sz_needed > 0)
-		{	// A bigger buffer is needed
-			SQLINTEGER sz_buff = sz_needed + 1;
-			std::auto_ptr<TCHAR> p_data(new TCHAR[sz_buff]);
-			SQLGetData(stmt_h, col_num, SQL_C_TCHAR, (SQLTCHAR *)p_data.get(), sz_buff, &sz_needed);
-			return _tstring(p_data.get());
-		}
-
-		return _tstring();	// Empty
-	}
-
-	// Get field as long
-	long field_impl::as_long() const
-	{	return __get_data<long>(stmt_h, col_num, SQL_C_SLONG, 0);
-	}
-
-	// Get field as unsigned long
-	unsigned long field_impl::as_unsigned_long() const
-	{	return __get_data<unsigned long>(stmt_h, col_num, SQL_C_ULONG, 0);
-	}
-
-	// Get field as double
-	double field_impl::as_double() const
-	{	return __get_data<double>(stmt_h, col_num, SQL_C_DOUBLE, 0);
-	}
-
-	// Get field as float
-	float field_impl::as_float() const
-	{	return __get_data<float>(stmt_h, col_num, SQL_C_FLOAT, 0);
-	}
-
-	// Get field as short
-	short field_impl::as_short() const
-	{	return __get_data<short>(stmt_h, col_num, SQL_C_SSHORT, 0);
-	}
-
-	// Get field as unsigned short
-	unsigned short field_impl::as_unsigned_short() const
-	{	return __get_data<unsigned short>(stmt_h, col_num, SQL_C_USHORT, 0);
-	}
-
-
-	template <class T>
-	const T & __bind_param(HSTMT _stmt, int _parnum, SQLSMALLINT _ctype, SQLSMALLINT _sqltype, void * dst_buf, const T & _value)
-	{
-		// Save buffer internally
-		memcpy(dst_buf, &_value, sizeof(_value));
-
-		// Bind on internal buffer		
-		SQLINTEGER StrLenOrInPoint = 0;
-		SQLBindParameter(_stmt,
-			_parnum,
-			SQL_PARAM_INPUT,
-			_ctype,
-			_sqltype,
-			0,
-			0,
-			(SQLPOINTER *)dst_buf,
-			0,
-			&StrLenOrInPoint
-			);
-
-		return *(T *) dst_buf;
-	}
-
-	// Constructor
-	param_impl::param_impl(HSTMT _stmt, int _par_num)
-		:stmt_h(_stmt),
-		par_num(_par_num)
-	{
-	}
-
-	// Copy constructor
-	param_impl::param_impl(const param_impl & r)
-		:stmt_h(r.stmt_h),
-		par_num(r.par_num)
-	{}
-
-	// Destructor
-	param_impl::~param_impl()
-	{}
-
-	// Copy operator
-	param_impl & param_impl::operator=(const param_impl & r)
-	{
-		stmt_h = r.stmt_h;
-		par_num = r.par_num;
-		return *this;
-	}
-
-	//! Set as string
-	const _tstring & param_impl::set_as_string(const _tstring & _str)
-	{	// Save buffer internally
-		_int_string = _str;
-
-		// Bind on internal buffer		
-		_int_SLOIP = SQL_NTS;
-		SQLBindParameter(stmt_h,
-			par_num,
-			SQL_PARAM_INPUT,
-			SQL_C_TCHAR,
-			SQL_CHAR,
-			(SQLUINTEGER)_int_string.size(),
-			0,
-			(SQLPOINTER *)_int_string.c_str(),
-			(SQLINTEGER)_int_string.size()+1,
-			&_int_SLOIP);;
-
-		return _int_string;
-	}
-
-	//! Set as string
-	const long & param_impl::set_as_long(const long & _value)
-	{	return __bind_param(stmt_h, par_num, SQL_C_SLONG, SQL_INTEGER, _int_buffer, _value);	}
-
-	//! Set parameter as usigned long
-	const unsigned long & param_impl::set_as_unsigned_long(const unsigned long & _value)
-	{	return __bind_param(stmt_h, par_num, SQL_C_ULONG, SQL_INTEGER, _int_buffer, _value);	}
 
 };	// !namespace tiodbc
