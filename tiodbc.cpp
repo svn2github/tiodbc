@@ -344,7 +344,7 @@ namespace tiodbc
 	}
 
 	template<class T>
-	T _get_builtin_type_data(HSTMT _stmt, int _col, SQLSMALLINT _ttype, T error_value)
+	T __get_data(HSTMT _stmt, int _col, SQLSMALLINT _ttype, T error_value)
 	{	T tmp_storage;
 		SQLINTEGER cb_needed;
 		RETCODE rc;
@@ -402,32 +402,32 @@ namespace tiodbc
 
 	// Get field as long
 	long field_impl::as_long() const
-	{	return _get_builtin_type_data<long>(stmt_h, col_num, SQL_C_SLONG, 0);
+	{	return __get_data<long>(stmt_h, col_num, SQL_C_SLONG, 0);
 	}
 
 	// Get field as unsigned long
 	unsigned long field_impl::as_unsigned_long() const
-	{	return _get_builtin_type_data<unsigned long>(stmt_h, col_num, SQL_C_ULONG, 0);
+	{	return __get_data<unsigned long>(stmt_h, col_num, SQL_C_ULONG, 0);
 	}
 
 	// Get field as double
 	double field_impl::as_double() const
-	{	return _get_builtin_type_data<double>(stmt_h, col_num, SQL_C_DOUBLE, 0);
+	{	return __get_data<double>(stmt_h, col_num, SQL_C_DOUBLE, 0);
 	}
 
 	// Get field as float
 	float field_impl::as_float() const
-	{	return _get_builtin_type_data<float>(stmt_h, col_num, SQL_C_FLOAT, 0);
+	{	return __get_data<float>(stmt_h, col_num, SQL_C_FLOAT, 0);
 	}
 
 	// Get field as short
 	short field_impl::as_short() const
-	{	return _get_builtin_type_data<short>(stmt_h, col_num, SQL_C_SSHORT, 0);
+	{	return __get_data<short>(stmt_h, col_num, SQL_C_SSHORT, 0);
 	}
 
 	// Get field as unsigned short
 	unsigned short field_impl::as_unsigned_short() const
-	{	return _get_builtin_type_data<unsigned short>(stmt_h, col_num, SQL_C_USHORT, 0);
+	{	return __get_data<unsigned short>(stmt_h, col_num, SQL_C_USHORT, 0);
 	}
 
 

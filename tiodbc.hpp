@@ -16,9 +16,9 @@
 */
 namespace tiodbc
 {
-	// Define TCHARed std::string as _tstring;
+	//! MACRO for std::wstring or std::string based on _UNICODE definition.
 	#ifdef _UNICODE
-		typedef std::wstring _tstring;
+		typedef std::wstring _tstring;	
 	#else
 		typedef std::string _tstring;
 	#endif
@@ -32,6 +32,9 @@ namespace tiodbc
 
 	//! An ODBC connection object
 	/**
+		Connection object is implementing the actual connection
+		as an ODBC Client, this object can be used from statement
+		to perform queries on this connection.
 	@note tiodbc::connection is <B>Uncopiable</b> and <b>NON inheritable</b>
 	*/
 	class connection
@@ -47,39 +50,128 @@ namespace tiodbc
 	
 	public:
 		//! Default constructor
+		/**
+			It constructs a connection object that is ready
+			to connect.
+		@see connect()
+		*/
 		connection();
 
-		//! Construct by data source
+		//! Construct and connect to a Data Source
+		/**
+			It constructs a connection object and connects
+			it to the desired Data Source.
+		@param _dsn The name of the Data Source
+		@param _user The username for authenticating to the Data Source.
+			If _user is empty string, it will try to connect with the predefined
+			user stored inside the Data Source.
+		@param _pass The password for authenticating to the Data Source.
+			If _pass is empty string, it will try to connect with the predefined
+			password stored inside the Data Source.
+		@remarks
+			If the connection fails, the object will be constructed properly
+			but it will be unconnected. A failed connection does not mean that
+			the object is dirty, you can use connect() to try connecting again.
+		@see connected(), connect()
+		*/
 		connection(const _tstring & _dsn,
 			const _tstring & _user,
 			const _tstring & _pass);
 
 		//! Destructor
+		/**
+			It will disconnect (if connected) from the db and
+			all the statements will be invalidated.
+		*/
 		~connection();
 
-		//! Connect to a data source
+		//! Connect to a Data Source
+		/**
+			Connect this object with a Data Source.
+			If the object is already connected, it will
+			disconnect automatically before trying to connect
+			to the new Data Source.
+		@param _dsn The name of the Data Source
+		@param _user The username for authenticating to the Data Source.
+			If _user is empty string, it will try to connect with the predefined
+			user stored inside the Data Source.
+		@param _pass The password for authenticating to the Data Source.
+			If _pass is empty string, it will try to connect with the predefined
+			password stored inside the Data Source.
+		@return <b>True</b> if the connection succeds or <b>False<b> if it fails.
+			For extensive error reporting call last_error() or last_error_status_code()
+			after failure.		
+		@see disconnect(), connect(), last_error(), last_error_status_code()
+		*/
 		bool connect(const _tstring & _dsn,
 			const _tstring & _user,
 			const _tstring & _pass);
 
-		//! Check if it is open
+		//! Check if it is connected
+		/**
+		@return <b>True</b> If the object is connected to any server, or
+			<b>False</b> if it isn't.
+		*/
 		bool connected() const;
 
 		//! Close connection
+		/**
+			If the object is connected it will close the connection.
+			If the object is already disconnected, calling disconnect()
+			will leave the object unaffected.
+		*/
 		void disconnect();
 
 		//! Get native HDBC handle
+		/**
+			This is the <b>DataBaseConnetcion</b>
+			handle that the object has allocated
+			internally with ODBC ISO API. This handle
+			can be usefull to anyone who needs to use ODBC ISO API
+			alogn with TinyODBC.
+		@see native_evn_handle()
+		*/
 		HDBC native_dbc_handle()
 		{	return conn_h;	}
 
 		//! Get native HENV handle
+		/**
+			This is the <b>Enviroment</b>
+			handle that the object has allocated
+			internally with ODBC ISO API. This handle
+			can be usefull to anyone who needs to use ODBC ISO API
+			alogn with TinyODBC.
+		@see native_dbc_handle()
+		*/
 		HDBC native_evn_handle()
 		{	return env_h;	}
 
 		//! Get last error description
+		/**
+			Get the description of the error that occured
+			with the last function call.
+		@return If the last function call was succesfull it will
+			return an empty string, otherwise it will return
+			the description of the error that occured inside
+			the ODBC driver.
+		@see last_error_status_code()
+		*/
 		_tstring last_error();
 
 		//! Get last error code
+		/**
+			Get the status of the error that occured
+			with the last function call.
+		@return If the last function call was succesfull it will
+			return an empty string, otherwise it will return
+			the status code of the error that occured inside
+			the ODBC driver.
+		@remarks The status codes are unique 5 legth strings that
+			correspond to a unique error. For information of
+			this status code check ODBC API Reference (http://msdn.microsoft.com/en-us/library/ms716412(VS.85).aspx)
+			
+		@see last_error();
+		*/
 		_tstring last_error_status_code();
 	};	// !connection
 
@@ -178,9 +270,9 @@ namespace tiodbc
 		void reset_parameters();
 
 		//! @}
-	};	// !connection
+	};	// !statement
 
-	//! An ODBC field
+	//! An ODBC field_impl
 	/**
 	@note odbc::field_impl is <B>Copyable</b>, <b>NON inheritable</b> and <b>NOT direct constructable</b>
 	*/
@@ -227,7 +319,7 @@ namespace tiodbc
 
 		// Get field as float
 		float as_float() const;
-	}; //! field_impl
+	}; // !field_impl
 
 
 	//! An ODBC statement parameter
@@ -268,7 +360,7 @@ namespace tiodbc
 
 		//! Set parameter as usigned long
 		const unsigned long & set_as_unsigned_long(const unsigned long & _value);
-	};
+	};	// !param_impl
 };
 
 #endif // !_TIODBC_HPP_DEFINED_
