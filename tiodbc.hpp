@@ -1,8 +1,11 @@
 /***************************************************************************
 
-    The MIT License
+    This file is part of project: TinyODBC
+    TinyODBC is hosted under: http://code.google.com/p/tiodbc/
 
     Copyright (c) 2008 SqUe <squarious _at_ gmail _dot_ com>
+
+    The MIT Licence
 
     Permission is hereby granted, free of charge, to any person obtaining a copy
     of this software and associated documentation files (the "Software"), to deal
