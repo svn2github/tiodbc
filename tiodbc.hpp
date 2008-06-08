@@ -1,3 +1,29 @@
+/***************************************************************************
+
+    The MIT License
+
+    Copyright (c) 2008 SqUe <squarious _at_ gmail _dot_ com>
+
+    Permission is hereby granted, free of charge, to any person obtaining a copy
+    of this software and associated documentation files (the "Software"), to deal
+    in the Software without restriction, including without limitation the rights
+    to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+    copies of the Software, and to permit persons to whom the Software is
+    furnished to do so, subject to the following conditions:
+
+    The above copyright notice and this permission notice shall be included in
+    all copies or substantial portions of the Software.
+
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+    AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+    THE SOFTWARE.
+*****************************************************************************/
+
+
 #ifndef _TIODBC_HPP_DEFINED_
 #define _TIODBC_HPP_DEFINED_
 
@@ -126,6 +152,8 @@ namespace tiodbc
 			For extensive error reporting call last_error() or last_error_status_code()
 			after failure.		
 		@see disconnect(), connect(), last_error(), last_error_status_code()
+
+        @ref example_1
 		*/
 		bool connect(const _tstring & _dsn,
 			const _tstring & _user,
@@ -135,6 +163,8 @@ namespace tiodbc
 		/**
 		@return <b>True</b> If the object is connected to any server, or
 			<b>False</b> if it isn't.
+        
+        @ref example_1
 		*/
 		bool connected() const;
 
@@ -143,6 +173,8 @@ namespace tiodbc
 			If the object is connected it will close the connection.
 			If the object is already disconnected, calling disconnect()
 			will leave the object unaffected.
+
+        @ref example_1
 		*/
 		void disconnect();
 
@@ -481,6 +513,8 @@ namespace tiodbc
 			that any previous opened operation of this statement will be closed
 			and a new statement will be created.
 		@see param(), execute(), fetch_next(), field(),  close()
+
+        @ref example_4
 		*/
 		bool prepare(connection & _conn, const _tstring & _stmt);
 
@@ -505,6 +539,9 @@ namespace tiodbc
 			that any previous opened operation of this statement will be closed
 			and a new statement will be created.
 		@see fetch_next(), count_columns(), field(), close()
+
+        @ref example_2 \n
+        @ref example_3
 		*/
 		bool execute_direct(connection & _conn, const _tstring & _query);
 
@@ -537,6 +574,8 @@ namespace tiodbc
 			to get each field of the current row.
 
 		@see fetch_next(), count_columns(), field(), close()
+
+        @ref example_4
 		*/
 		bool execute();
 
@@ -553,6 +592,9 @@ namespace tiodbc
 			there isn't opened any result set.
 
 		@see field()
+
+        @ref example_2
+        @ref example_4
 		*/
 		bool fetch_next();
 
@@ -573,6 +615,9 @@ namespace tiodbc
 			<b>good</b> example: @code m_long = field(1).as_long() @endcode\n
 			<b>bad</b> example: @code field_impl tmp_field = field(1);  m_long = tmp_field.as_long(); @endcode
 		@see fetch_next();
+
+        @ref example_2 \n
+        @ref example_4
 		*/
 		const field_impl field(int _num) const;
 
@@ -584,6 +629,8 @@ namespace tiodbc
 			- If the operation was <b>successful</b> it will return a number
 			<b>bigger than zero</b>.
 			- <b>Less than zero or equal to</b> in case of any <b>error</b>.
+
+        @ref example_2
 		*/
 		int count_columns() const;
 

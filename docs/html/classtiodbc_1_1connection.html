@@ -9,6 +9,7 @@
   <div class="tabs">
     <ul>
       <li><a href="index.html"><span>Main&nbsp;Page</span></a></li>
+      <li><a href="pages.html"><span>Related&nbsp;Pages</span></a></li>
       <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
@@ -202,8 +203,8 @@ Connect this object with a Data Source. If the object is already connected, it w
   </table>
 </dl>
 <dl class="return" compact><dt><b>Returns:</b></dt><dd><b>True</b> if the <a class="el" href="classtiodbc_1_1connection.html" title="An ODBC connection representation object.">connection</a> succeds or <b>False</b> if it fails. For extensive error reporting call <a class="el" href="classtiodbc_1_1connection.html#07d9e69f8b6d25af44e75f4fb6fe32d2" title="Get last error description.">last_error()</a> or <a class="el" href="classtiodbc_1_1connection.html#eb879b3a148d59c2c2b53f42ba867f9f" title="Get last error code.">last_error_status_code()</a> after failure. </dd></dl>
-<dl class="see" compact><dt><b>See also:</b></dt><dd><a class="el" href="classtiodbc_1_1connection.html#a6e7bf4a77ed60c542e80d2cf5ad1ce3" title="Close connection.">disconnect()</a>, <a class="el" href="classtiodbc_1_1connection.html#4e11f36607613fef7d50507a14dcf008" title="Connect to a Data Source.">connect()</a>, <a class="el" href="classtiodbc_1_1connection.html#07d9e69f8b6d25af44e75f4fb6fe32d2" title="Get last error description.">last_error()</a>, <a class="el" href="classtiodbc_1_1connection.html#eb879b3a148d59c2c2b53f42ba867f9f" title="Get last error code.">last_error_status_code()</a> </dd></dl>
-
+<dl class="see" compact><dt><b>See also:</b></dt><dd><a class="el" href="classtiodbc_1_1connection.html#a6e7bf4a77ed60c542e80d2cf5ad1ce3" title="Close connection.">disconnect()</a>, <a class="el" href="classtiodbc_1_1connection.html#4e11f36607613fef7d50507a14dcf008" title="Connect to a Data Source.">connect()</a>, <a class="el" href="classtiodbc_1_1connection.html#07d9e69f8b6d25af44e75f4fb6fe32d2" title="Get last error description.">last_error()</a>, <a class="el" href="classtiodbc_1_1connection.html#eb879b3a148d59c2c2b53f42ba867f9f" title="Get last error code.">last_error_status_code()</a></dd></dl>
+<a class="el" href="examples.html#example_1">Example 1: Connecting and disconnecting from a server.</a> 
 </div>
 </div><p>
 <a class="anchor" name="77edc81ed4a26967a78945d2018d2952"></a><!-- doxytag: member="tiodbc::connection::connected" ref="77edc81ed4a26967a78945d2018d2952" args="() const " -->
@@ -224,8 +225,8 @@ Connect this object with a Data Source. If the object is already connected, it w
 <p>
 Check if it is connected. 
 <p>
-<dl class="return" compact><dt><b>Returns:</b></dt><dd><b>True</b> If the object is connected to any server, or <b>False</b> if it isn't. </dd></dl>
-
+<dl class="return" compact><dt><b>Returns:</b></dt><dd><b>True</b> If the object is connected to any server, or <b>False</b> if it isn't.</dd></dl>
+<a class="el" href="examples.html#example_1">Example 1: Connecting and disconnecting from a server.</a> 
 </div>
 </div><p>
 <a class="anchor" name="a6e7bf4a77ed60c542e80d2cf5ad1ce3"></a><!-- doxytag: member="tiodbc::connection::disconnect" ref="a6e7bf4a77ed60c542e80d2cf5ad1ce3" args="()" -->
@@ -246,7 +247,8 @@ Check if it is connected.
 <p>
 Close <a class="el" href="classtiodbc_1_1connection.html" title="An ODBC connection representation object.">connection</a>. 
 <p>
-If the object is connected it will close the <a class="el" href="classtiodbc_1_1connection.html" title="An ODBC connection representation object.">connection</a>. If the object is already disconnected, calling <a class="el" href="classtiodbc_1_1connection.html#a6e7bf4a77ed60c542e80d2cf5ad1ce3" title="Close connection.">disconnect()</a> will leave the object unaffected. 
+If the object is connected it will close the <a class="el" href="classtiodbc_1_1connection.html" title="An ODBC connection representation object.">connection</a>. If the object is already disconnected, calling <a class="el" href="classtiodbc_1_1connection.html#a6e7bf4a77ed60c542e80d2cf5ad1ce3" title="Close connection.">disconnect()</a> will leave the object unaffected.<p>
+<a class="el" href="examples.html#example_1">Example 1: Connecting and disconnecting from a server.</a> 
 </div>
 </div><p>
 <a class="anchor" name="a834bf86e69a13aba94baed3f564fae0"></a><!-- doxytag: member="tiodbc::connection::native_dbc_handle" ref="a834bf86e69a13aba94baed3f564fae0" args="()" -->
@@ -343,7 +345,7 @@ Get the status of the error that occured with the last function call. <dl class=
 <hr>The documentation for this class was generated from the following files:<ul>
 <li>C:/Users/sque/SVN/tiodbc2/trunk/<a class="el" href="tiodbc_8hpp-source.html">tiodbc.hpp</a><li>C:/Users/sque/SVN/tiodbc2/trunk/tiodbc.cpp</ul>
 </div>
-<hr size="1"><address style="text-align: right;"><small>Generated on Sun Jun 8 01:11:01 2008 for TinyODBC by&nbsp;
+<hr size="1"><address style="text-align: right;"><small>Generated on Mon Jun 9 01:44:56 2008 for TinyODBC by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.5 </small></address>
 </body>

@@ -9,6 +9,7 @@
   <div class="tabs">
     <ul>
       <li><a href="index.html"><span>Main&nbsp;Page</span></a></li>
+      <li><a href="pages.html"><span>Related&nbsp;Pages</span></a></li>
       <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
@@ -346,8 +347,8 @@ If you need to execute direct an sql query directly you can use <a class="el" hr
 </dl>
 <dl class="return" compact><dt><b>Returns:</b></dt><dd><b>True</b> if the preparation was succesfull or <b>False</b> if there was an error. In case of error check <a class="el" href="classtiodbc_1_1statement.html#76e3d7ac6b66e06e81c85c544aba491b" title="Get last error description.">last_error()</a> for detailed description of error.</dd></dl>
 <dl class="note" compact><dt><b>Note:</b></dt><dd>This is a <b>"statement construction" function</b> which means that any previous opened operation of this <a class="el" href="classtiodbc_1_1statement.html" title="An ODBC statement representation object.">statement</a> will be closed and a new <a class="el" href="classtiodbc_1_1statement.html" title="An ODBC statement representation object.">statement</a> will be created. </dd></dl>
-<dl class="see" compact><dt><b>See also:</b></dt><dd><a class="el" href="classtiodbc_1_1statement.html#81b7f2c1f9ad1c922e57b38bbdbc8042" title="Handle a parameter.">param()</a>, <a class="el" href="classtiodbc_1_1statement.html#bab8c3c07df365827230600c7c1576db" title="Execute a prepared statement.">execute()</a>, <a class="el" href="classtiodbc_1_1statement.html#8666cc7f161c58ddb0dbde138cd09d24" title="Fetch next result row.">fetch_next()</a>, <a class="el" href="classtiodbc_1_1statement.html#346c38630d3fc9b2444832592ea92380" title="Get a field of the current row in the result set.">field()</a>, <a class="el" href="classtiodbc_1_1statement.html#1813a912eb6b16e2fd29f5ca91f5b4b0" title="Close statement.">close()</a> </dd></dl>
-
+<dl class="see" compact><dt><b>See also:</b></dt><dd><a class="el" href="classtiodbc_1_1statement.html#81b7f2c1f9ad1c922e57b38bbdbc8042" title="Handle a parameter.">param()</a>, <a class="el" href="classtiodbc_1_1statement.html#bab8c3c07df365827230600c7c1576db" title="Execute a prepared statement.">execute()</a>, <a class="el" href="classtiodbc_1_1statement.html#8666cc7f161c58ddb0dbde138cd09d24" title="Fetch next result row.">fetch_next()</a>, <a class="el" href="classtiodbc_1_1statement.html#346c38630d3fc9b2444832592ea92380" title="Get a field of the current row in the result set.">field()</a>, <a class="el" href="classtiodbc_1_1statement.html#1813a912eb6b16e2fd29f5ca91f5b4b0" title="Close statement.">close()</a></dd></dl>
+<a class="el" href="examples.html#example_4">Example 4: Prepare a statement and execute it multiple times</a> 
 </div>
 </div><p>
 <a class="anchor" name="1633667ca4afc17cbd5b9dfe9d9822a5"></a><!-- doxytag: member="tiodbc::statement::execute_direct" ref="1633667ca4afc17cbd5b9dfe9d9822a5" args="(connection &amp;_conn, const _tstring &amp;_query)" -->
@@ -388,8 +389,9 @@ It will close any previous opened operation and will execute directly the desire
 <dl class="return" compact><dt><b>Returns:</b></dt><dd><b>True</b> if the execution was succesfull or <b>False</b> if there was an error. In case of error check <a class="el" href="classtiodbc_1_1statement.html#76e3d7ac6b66e06e81c85c544aba491b" title="Get last error description.">last_error()</a> for detailed description of problem. </dd></dl>
 <dl class="remark" compact><dt><b>Remarks:</b></dt><dd>After a succesfull execution of a query, the result cursor is pointed one slot before first row. To get the results of first row you must first call once <a class="el" href="classtiodbc_1_1statement.html#8666cc7f161c58ddb0dbde138cd09d24" title="Fetch next result row.">fetch_next()</a> and then use <a class="el" href="classtiodbc_1_1statement.html#346c38630d3fc9b2444832592ea92380" title="Get a field of the current row in the result set.">field()</a> to get each field of the current row.</dd></dl>
 <dl class="note" compact><dt><b>Note:</b></dt><dd>This is a <b>"statement construction" function</b> which means that any previous opened operation of this <a class="el" href="classtiodbc_1_1statement.html" title="An ODBC statement representation object.">statement</a> will be closed and a new <a class="el" href="classtiodbc_1_1statement.html" title="An ODBC statement representation object.">statement</a> will be created. </dd></dl>
-<dl class="see" compact><dt><b>See also:</b></dt><dd><a class="el" href="classtiodbc_1_1statement.html#8666cc7f161c58ddb0dbde138cd09d24" title="Fetch next result row.">fetch_next()</a>, <a class="el" href="classtiodbc_1_1statement.html#33c9ea30bcee5efe5a1fe3a318f6ca9c" title="Count columns of the result set.">count_columns()</a>, <a class="el" href="classtiodbc_1_1statement.html#346c38630d3fc9b2444832592ea92380" title="Get a field of the current row in the result set.">field()</a>, <a class="el" href="classtiodbc_1_1statement.html#1813a912eb6b16e2fd29f5ca91f5b4b0" title="Close statement.">close()</a> </dd></dl>
-
+<dl class="see" compact><dt><b>See also:</b></dt><dd><a class="el" href="classtiodbc_1_1statement.html#8666cc7f161c58ddb0dbde138cd09d24" title="Fetch next result row.">fetch_next()</a>, <a class="el" href="classtiodbc_1_1statement.html#33c9ea30bcee5efe5a1fe3a318f6ca9c" title="Count columns of the result set.">count_columns()</a>, <a class="el" href="classtiodbc_1_1statement.html#346c38630d3fc9b2444832592ea92380" title="Get a field of the current row in the result set.">field()</a>, <a class="el" href="classtiodbc_1_1statement.html#1813a912eb6b16e2fd29f5ca91f5b4b0" title="Close statement.">close()</a></dd></dl>
+<a class="el" href="examples.html#example_2">Example 2: Execute directly an sql query and get results.</a> <br>
+ <a class="el" href="examples.html#example_3">Example 3: Execute directly an "INSERT" sql query.</a> 
 </div>
 </div><p>
 <a class="anchor" name="bab8c3c07df365827230600c7c1576db"></a><!-- doxytag: member="tiodbc::statement::execute" ref="bab8c3c07df365827230600c7c1576db" args="()" -->
@@ -417,8 +419,8 @@ To execute a prepared query there are some preconditions that must be satisfied.
 <p>
 <dl class="return" compact><dt><b>Returns:</b></dt><dd><b>True</b> if the prepared query was succesfully executed or <b>False</b> if there was an error. In case of error check <a class="el" href="classtiodbc_1_1statement.html#76e3d7ac6b66e06e81c85c544aba491b" title="Get last error description.">last_error()</a> for detailed description of problem.</dd></dl>
 <dl class="remark" compact><dt><b>Remarks:</b></dt><dd>After a succesfull execution of a query, the result cursor is pointed one slot before first row. To get the results of first row you must first call once <a class="el" href="classtiodbc_1_1statement.html#8666cc7f161c58ddb0dbde138cd09d24" title="Fetch next result row.">fetch_next()</a> and then use <a class="el" href="classtiodbc_1_1statement.html#346c38630d3fc9b2444832592ea92380" title="Get a field of the current row in the result set.">field()</a> to get each field of the current row.</dd></dl>
-<dl class="see" compact><dt><b>See also:</b></dt><dd><a class="el" href="classtiodbc_1_1statement.html#8666cc7f161c58ddb0dbde138cd09d24" title="Fetch next result row.">fetch_next()</a>, <a class="el" href="classtiodbc_1_1statement.html#33c9ea30bcee5efe5a1fe3a318f6ca9c" title="Count columns of the result set.">count_columns()</a>, <a class="el" href="classtiodbc_1_1statement.html#346c38630d3fc9b2444832592ea92380" title="Get a field of the current row in the result set.">field()</a>, <a class="el" href="classtiodbc_1_1statement.html#1813a912eb6b16e2fd29f5ca91f5b4b0" title="Close statement.">close()</a> </dd></dl>
-
+<dl class="see" compact><dt><b>See also:</b></dt><dd><a class="el" href="classtiodbc_1_1statement.html#8666cc7f161c58ddb0dbde138cd09d24" title="Fetch next result row.">fetch_next()</a>, <a class="el" href="classtiodbc_1_1statement.html#33c9ea30bcee5efe5a1fe3a318f6ca9c" title="Count columns of the result set.">count_columns()</a>, <a class="el" href="classtiodbc_1_1statement.html#346c38630d3fc9b2444832592ea92380" title="Get a field of the current row in the result set.">field()</a>, <a class="el" href="classtiodbc_1_1statement.html#1813a912eb6b16e2fd29f5ca91f5b4b0" title="Close statement.">close()</a></dd></dl>
+<a class="el" href="examples.html#example_4">Example 4: Prepare a statement and execute it multiple times</a> 
 </div>
 </div><p>
 <a class="anchor" name="8666cc7f161c58ddb0dbde138cd09d24"></a><!-- doxytag: member="tiodbc::statement::fetch_next" ref="8666cc7f161c58ddb0dbde138cd09d24" args="()" -->
@@ -443,8 +445,8 @@ If the <a class="el" href="classtiodbc_1_1statement.html" title="An ODBC stateme
 <dl class="return" compact><dt><b>Returns:</b></dt><dd><ul>
 <li><b>True</b> if the cursor was advanced succesfully.</li><li><b>False</b> if the end of result set has been reached or there isn't opened any result set.</li></ul>
 </dd></dl>
-<dl class="see" compact><dt><b>See also:</b></dt><dd><a class="el" href="classtiodbc_1_1statement.html#346c38630d3fc9b2444832592ea92380" title="Get a field of the current row in the result set.">field()</a> </dd></dl>
-
+<dl class="see" compact><dt><b>See also:</b></dt><dd><a class="el" href="classtiodbc_1_1statement.html#346c38630d3fc9b2444832592ea92380" title="Get a field of the current row in the result set.">field()</a></dd></dl>
+<a class="el" href="examples.html#example_2">Example 2: Execute directly an sql query and get results.</a> <a class="el" href="examples.html#example_4">Example 4: Prepare a statement and execute it multiple times</a> 
 </div>
 </div><p>
 <a class="anchor" name="346c38630d3fc9b2444832592ea92380"></a><!-- doxytag: member="tiodbc::statement::field" ref="346c38630d3fc9b2444832592ea92380" args="(int _num) const " -->
@@ -479,8 +481,9 @@ It will return a field of the current selected row from the result set. <dl comp
 </pre></div><br>
  <b>bad</b> example: <div class="fragment"><pre class="fragment"> field_impl tmp_field = <a class="code" href="classtiodbc_1_1statement.html#346c38630d3fc9b2444832592ea92380" title="Get a field of the current row in the result set.">field</a>(1);  m_long = tmp_field.as_long(); 
 </pre></div> </dd></dl>
-<dl class="see" compact><dt><b>See also:</b></dt><dd><a class="el" href="classtiodbc_1_1statement.html#8666cc7f161c58ddb0dbde138cd09d24" title="Fetch next result row.">fetch_next()</a>; </dd></dl>
-
+<dl class="see" compact><dt><b>See also:</b></dt><dd><a class="el" href="classtiodbc_1_1statement.html#8666cc7f161c58ddb0dbde138cd09d24" title="Fetch next result row.">fetch_next()</a>;</dd></dl>
+<a class="el" href="examples.html#example_2">Example 2: Execute directly an sql query and get results.</a> <br>
+ <a class="el" href="examples.html#example_4">Example 4: Prepare a statement and execute it multiple times</a> 
 </div>
 </div><p>
 <a class="anchor" name="33c9ea30bcee5efe5a1fe3a318f6ca9c"></a><!-- doxytag: member="tiodbc::statement::count_columns" ref="33c9ea30bcee5efe5a1fe3a318f6ca9c" args="() const " -->
@@ -502,9 +505,9 @@ It will return a field of the current selected row from the result set. <dl comp
 Count columns of the result set. 
 <p>
 It will return the number of columns of the current open result set. <dl class="return" compact><dt><b>Returns:</b></dt><dd><ul>
-<li>If the operation was <b>successful</b> it will return a number <b>bigger than zero</b>.</li><li><b>Less than zero or equal to</b> in case of any <b>error</b>. </li></ul>
+<li>If the operation was <b>successful</b> it will return a number <b>bigger than zero</b>.</li><li><b>Less than zero or equal to</b> in case of any <b>error</b>.</li></ul>
 </dd></dl>
-
+<a class="el" href="examples.html#example_2">Example 2: Execute directly an sql query and get results.</a> 
 </div>
 </div><p>
 <a class="anchor" name="81b7f2c1f9ad1c922e57b38bbdbc8042"></a><!-- doxytag: member="tiodbc::statement::param" ref="81b7f2c1f9ad1c922e57b38bbdbc8042" args="(int _num)" -->
@@ -567,7 +570,7 @@ In case that this is not a prepared <a class="el" href="classtiodbc_1_1statement
 <hr>The documentation for this class was generated from the following files:<ul>
 <li>C:/Users/sque/SVN/tiodbc2/trunk/<a class="el" href="tiodbc_8hpp-source.html">tiodbc.hpp</a><li>C:/Users/sque/SVN/tiodbc2/trunk/tiodbc.cpp</ul>
 </div>
-<hr size="1"><address style="text-align: right;"><small>Generated on Sun Jun 8 01:11:01 2008 for TinyODBC by&nbsp;
+<hr size="1"><address style="text-align: right;"><small>Generated on Mon Jun 9 01:44:56 2008 for TinyODBC by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.5 </small></address>
 </body>

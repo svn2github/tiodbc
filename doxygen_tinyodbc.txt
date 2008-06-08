@@ -1,0 +1,220 @@
+/**
+
+@mainpage
+
+@section intro Introduction to TinyODBC
+<b> TinyODBC is a C++ Wrapper around ODBC C API.\n
+That's all! Nothing more, nothing less! </b>
+
+Using ODBC C API produces quite "ugly" code and it is not object oriented!
+TinyODBC wraps ODBC C API and provides a C++ API that is Object Oriented,
+cleaner, easier to learn and takes advantage of many C++ techniques. 
+
+@section installation Installation
+
+As the title says TinyODBC is TINY! It consists of two source files,
+we could provide binaries but because of the size of the project you can just drop-in the sources to your project.
+Drop-in means that you copy those two files in the directory of
+your project and include them for compiling in your
+IDE(Visual Studio, Code-Blocks, Eclipse etc) or command-line build system(Makefiles, cmake). 
+
+The files needed are @ref tiodbc.hpp and @ref tiodbc.cpp
+
+@section usage Using library
+TinyODBC consists of two basic classes:
+  - tiodbc::connection That is used to create connection with DB servers.
+  - tiodbc::statement That is used to execute statements on DB servers.
+ .
+
+There are some example that show basic usage of library
+  -# @ref example_1
+  -# @ref example_2
+  -# @ref example_3
+  -# @ref example_4
+.
+
+@page Examples
+Those are some small example how to use TinyODBC on some commons senarios.
+
+  -# @ref example_1
+  -# @ref example_2
+  -# @ref example_3
+  -# @ref example_4
+.
+
+@section examples_demo Examples Demostration
+@subsection example_1 Example 1: Connecting and disconnecting from a server.
+
+@code
+#include "./tiodbc.hpp"
+#include <iostream>
+
+using namespace std;
+
+int main()
+{   
+   // Create a connection with an ODBC Data Source
+    tiodbc::connection my_connection("MyDSN", "", "");
+
+    // Check if it was connected succesfully
+    if (my_connection.connected())
+        cout << "Connection has been accomplished";
+    else
+        cout << "Error connecting with server" << endl
+            << my_connection.last_error();
+
+    
+    // Do more things here
+    //.....
+
+    // Disconnect
+    my_connection.disconnect();
+
+    return 0;
+}
+@endcode
+
+@subsection example_2 Example 2: Execute directly an sql query and get results.
+@code
+#include "./tiodbc.hpp"
+#include <iostream>
+
+using namespace std;
+
+int main()
+{   
+    tiodbc::connection my_connection;
+    tiodbc::statement my_statement;
+
+    // Create a connection with an ODBC Data Source
+    if (!my_connection.connect("MyDSN", "", ""))
+    {
+        cout << "Cannot connect to the Data Source" << endl
+            << my_connection.last_error();
+        return 1;
+    }
+
+    // Execute a direct query
+    if (!my_statement.execute_direct(my_connection, "SELECT * FROM my_table"))
+    {
+        cout << "Cannot execute query!" << endl
+            << my_connection.last_error();
+        return 2;
+    }
+
+    // Get results from statement
+    while(my_statement.fetch_next())
+    {
+        // print all fields for each row
+        for(int i = 1;i <= my_statement.count_columns(); i ++)
+            cout << my_statement.field(i).as_string() << "\t";
+
+        cout << endl;
+    }
+    return 0;
+}
+@endcode
+
+@subsection example_3 Example 3: Execute directly an "INSERT" sql query.
+@code
+#include "./tiodbc.hpp"
+#include <iostream>
+
+using namespace std;
+
+int main()
+{   
+    tiodbc::connection my_connection;
+    tiodbc::statement my_statement;
+
+    // Create a connection with an ODBC Data Source
+    if (!my_connection.connect("MyDSN", "", ""))
+    {
+        cout << "Cannot connect to the Data Source" << endl
+            << my_connection.last_error();
+        return 1;
+    }
+
+    // Execute a direct query
+    if (!my_statement.execute_direct(my_connection,
+        "INSERT INTO books (id, title, author) VALUES(\'0\', \'TinyODBC Manual\', \'sque\')"))
+    {
+        cout << "Cannot execute query!" << endl
+            << my_connection.last_error();
+        return 2;
+    }
+
+    return 0;
+}
+@endcode
+
+@subsection example_4 Example 4: Prepare a statement and execute it multiple times
+
+@code
+#include "./tiodbc.hpp"
+#include <iostream>
+
+using namespace std;
+
+int main()
+{   
+    tiodbc::connection my_connection;
+    tiodbc::statement my_statement;
+
+    // Create a connection with an ODBC Data Source
+    if (!my_connection.connect("MyDSN", "", ""))
+    {
+        cout << "Cannot connect to the Data Source" << endl
+            << my_connection.last_error();
+        return 1;
+    }
+
+    // Prepare the query
+    if (!my_statement.prepare(my_connection, "SELECT * FROM books WHERE author_id = ?"))
+    {
+        cout << "Cannot prepare query!" << endl
+            << my_connection.last_error();
+        return 2;
+    }
+
+    // Execute it with parameter (author_id) "2"
+    my_statement.param(1).set_as_long(2);
+    if (!my_statement.execute())
+    {
+        cout << "Cannot execute prepared query!" << endl
+            << my_statement.last_error();
+        return 2;
+    }
+
+    // Get results from statement
+    while(my_statement.fetch_next())
+    {
+        // print all fields for each row
+        for(int i = 1;i <= my_statement.count_columns(); i ++)
+            cout << my_statement.field(i).as_string() << "\t";
+
+        cout << endl;
+    }
+
+    // Execute again with parameter (author_id) "1"
+    my_statement.param(1).set_as_long(1);
+    if (!my_statement.execute())
+    {
+        cout << "Cannot execute prepared query!" << endl
+            << my_statement.last_error();
+        return 2;
+    }
+
+    // Get results from statement
+    while(my_statement.fetch_next())
+    {
+        // print all fields for each row
+        for(int i = 1;i <= my_statement.count_columns(); i ++)
+            cout << my_statement.field(i).as_string() << "\t";
+
+        cout << endl;
+    }
+    return 0;
+}
+@endcode
+*/
