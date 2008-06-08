@@ -27,21 +27,13 @@ TinyODBC consists of two basic classes:
  .
 
 There are some example that show basic usage of library
-  -# @ref example_1
-  -# @ref example_2
-  -# @ref example_3
-  -# @ref example_4
+  - @ref example_1
+  - @ref example_2
+  - @ref example_3
+  - @ref example_4
 .
 
 @page Examples
-Those are some small example how to use TinyODBC on some commons senarios.
-
-  -# @ref example_1
-  -# @ref example_2
-  -# @ref example_3
-  -# @ref example_4
-.
-
 @section examples_demo Examples Demostration
 @subsection example_1 Example 1: Connecting and disconnecting from a server.
 
