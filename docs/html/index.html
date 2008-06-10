@@ -19,14 +19,18 @@
 <div class="contents">
 <h1>TinyODBC Documentation</h1>
 <p>
-<h3 align="center">0.1 </h3><h2><a class="anchor" name="intro">
+<h3 align="center">0.1 </h3><h2><a class="anchor" name="project_details">
+Project Details</a></h2>
+<ul>
+<li><em>Name</em>: <b>TinyODBC</b></li><li><em>Licence</em>: <b>MIT Licence</b></li><li><em>Home Page</em>: <b><a href="http://tiodbc.googlecode.com">http://tiodbc.googlecode.com</a></b></li><li>Copyright (c) 2008 SqUe</li><li><em>Platforms</em>: Any Windows NT based platform.</li></ul>
+<h2><a class="anchor" name="intro">
 Introduction to TinyODBC</a></h2>
 <b> TinyODBC is a C++ Wrapper around ODBC C API.<br>
  That's all! Nothing more, nothing less! </b><p>
 Using ODBC C API produces quite "ugly" code and it is not object oriented! TinyODBC wraps ODBC C API and provides a C++ API that is Object Oriented, cleaner, easier to learn and takes advantage of many C++ techniques.<h2><a class="anchor" name="installation">
 Installation</a></h2>
 As the title says TinyODBC is TINY! It consists of two source files, we could provide binaries but because of the size of the project you can just drop-in the sources to your project. Drop-in means that you copy those two files in the directory of your project and include them for compiling in your IDE(Visual Studio, Code-Blocks, Eclipse etc) or command-line build system(Makefiles, cmake).<p>
-The files needed are <a class="el" href="tiodbc_8hpp-source.html">tiodbc.hpp</a> and tiodbc::cpp<h2><a class="anchor" name="usage">
+The files needed are <b><a class="el" href="tiodbc_8hpp-source.html">tiodbc.hpp</a></b> and <b>tiodbc.cpp</b><h2><a class="anchor" name="usage">
 Using library</a></h2>
 TinyODBC consists of two basic classes:<ul>
 <li><a class="el" href="classtiodbc_1_1connection.html" title="An ODBC connection representation object.">tiodbc::connection</a> That is used to create connection with DB servers.</li><li><a class="el" href="classtiodbc_1_1statement.html" title="An ODBC statement representation object.">tiodbc::statement</a> That is used to execute statements on DB servers.</li></ul>
@@ -34,7 +38,7 @@ TinyODBC consists of two basic classes:<ul>
 There are some example that show basic usage of library<ul>
 <li><a class="el" href="examples.html#example_1">Example 1: Connecting and disconnecting from a server.</a></li><li><a class="el" href="examples.html#example_2">Example 2: Execute directly an sql query and get results.</a></li><li><a class="el" href="examples.html#example_3">Example 3: Execute directly an "INSERT" sql query.</a></li><li><a class="el" href="examples.html#example_4">Example 4: Prepare a statement and execute it multiple times</a></li></ul>
 </div>
-<hr size="1"><address style="text-align: right;"><small>Generated on Mon Jun 9 01:59:16 2008 for TinyODBC by&nbsp;
+<hr size="1"><address style="text-align: right;"><small>Generated on Tue Jun 10 15:14:23 2008 for TinyODBC by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.5 </small></address>
 </body>
