@@ -144,7 +144,7 @@ INLINE_SOURCES         = NO
 STRIP_CODE_COMMENTS    = YES
 REFERENCED_BY_RELATION = NO
 REFERENCES_RELATION    = NO
-REFERENCES_LINK_SOURCE = YES
+REFERENCES_LINK_SOURCE = NO
 USE_HTAGS              = NO
 VERBATIM_HEADERS       = YES
 #---------------------------------------------------------------------------

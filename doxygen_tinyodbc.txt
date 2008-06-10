@@ -2,6 +2,15 @@
 
 @mainpage
 
+@section project_details Project Details
+
+ - <i>Name</i>: <b>TinyODBC</b>
+ - <i>Licence</i>: <b>MIT Licence</b>
+ - <i>Home Page</i>: <b>http://tiodbc.googlecode.com</b>
+ - Copyright (c) 2008 SqUe
+ - <i>Platforms</i>: Any Windows NT based platform.
+.
+
 @section intro Introduction to TinyODBC
 <b> TinyODBC is a C++ Wrapper around ODBC C API.\n
 That's all! Nothing more, nothing less! </b>
@@ -18,7 +27,7 @@ Drop-in means that you copy those two files in the directory of
 your project and include them for compiling in your
 IDE(Visual Studio, Code-Blocks, Eclipse etc) or command-line build system(Makefiles, cmake). 
 
-The files needed are @ref tiodbc.hpp and @ref tiodbc.cpp
+The files needed are <b>tiodbc.hpp</b> and <b>tiodbc.cpp</b>
 
 @section usage Using library
 TinyODBC consists of two basic classes:
