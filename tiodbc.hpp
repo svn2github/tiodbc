@@ -71,7 +71,7 @@ namespace tiodbc
 	/**
 		The major version is increased only when we
 		have major changes.
-	@return The actual version of the shared library.
+	@return The actual version of the linked library.
 	*/
 	unsigned short version_major();
 
@@ -79,7 +79,7 @@ namespace tiodbc
 	/**
 		The minor version is increased when new features
 		are added/removed or API breakage occurs.
-	@return The actual version of the shared library.
+	@return The actual version of the linked library.
 	*/
 	unsigned short version_minor();
 
@@ -87,7 +87,7 @@ namespace tiodbc
 	/**
 		The version revision number is changed only
 		for bug fixes.
-	@return The actual version of the shared library.
+	@return The actual version of the linked library.
 	*/
 	unsigned short version_revision();
 
@@ -193,11 +193,12 @@ namespace tiodbc
 
 		//! Get native HDBC handle
 		/**
-			This is the <b>DataBaseConnetcion</b>
+			This is the <b>DataBaseConnection</b>
 			handle that the object has allocated
 			internally with ODBC ISO API. This handle
-			can be usefull to anyone who needs to use ODBC ISO API
-			alogn with TinyODBC.
+			can be useful to anyone who needs to use ODBC ISO API
+			along with TinyODBC.
+		@return Actual used ODBC database connection handle for this instance.
 		@see native_evn_handle()
 		*/
 		HDBC native_dbc_handle()
@@ -207,11 +208,12 @@ namespace tiodbc
 
 		//! Get native HENV handle
 		/**
-			This is the <b>Enviroment</b>
+			This is the <b>Environment</b>
 			handle that the object has allocated
 			internally with ODBC ISO API. This handle
-			can be usefull to anyone who needs to use ODBC ISO API
-			alogn with TinyODBC.
+			can be useful to anyone who needs to use ODBC ISO API
+			along with TinyODBC.
+		@return Actual used ODBC Environment handle for this instance.
 		@see native_dbc_handle()
 		*/
 		HDBC native_evn_handle()
@@ -221,11 +223,11 @@ namespace tiodbc
 
 		//! Get last error description
 		/**
-			Get the description of the error that occured
+			Get the description of the error that occurred
 			with the last function call.
-		@return If the last function call was succesfull it will
+		@return If the last function call was successful it will
 			return an empty string, otherwise it will return
-			the description of the error that occured inside
+			the description of the error that occurred inside
 			the ODBC driver.
 		@see last_error_status_code()
 		*/
@@ -233,13 +235,13 @@ namespace tiodbc
 
 		//! Get last error code
 		/**
-			Get the status of the error that occured
+			Get the status of the error that occurred
 			with the last function call.
-		@return If the last function call was succesfull it will
+		@return If the last function call was successful it will
 			return an empty string, otherwise it will return
-			the status code of the error that occured inside
+			the status code of the error that occurred inside
 			the ODBC driver.
-		@remarks The status codes are unique 5 legth strings that
+		@remarks The status codes are unique 5 length strings that
 			correspond to a unique error. For information of
 			this status code check ODBC API Reference (http://msdn.microsoft.com/en-us/library/ms716412(VS.85).aspx)
 			
@@ -263,7 +265,7 @@ namespace tiodbc
 
 	private:
 		HSTMT stmt_h;			//!< Handle of statement that field exists
-		int col_num;			//!< Collumn number that field exists.
+		int col_num;			//!< Column number that field exists.
 		
 		// Not direct constructible
 		field_impl(HSTMT _stmt, int _col_num);
@@ -309,7 +311,7 @@ namespace tiodbc
 
 	//! Handler prepared statements parameters.
 	/**
-	@note tiodbc::param_impl is <B>Copyable</b>, <b>NON inheritable</b> and <b>NOT direct constructable</b>
+	@note tiodbc::param_impl is <B>Copyable</b>, <b>NON inheritable</b> and <b>NOT direct constructible</b>
 	@remarks
 		You <b>must</b> not create objects of this class directly but instead invoke statement::param() to get
 		one. You <b>must not</b> keep the objects for more than directly calling one of its members, 
@@ -473,6 +475,7 @@ namespace tiodbc
 			internally with ODBC ISO API. This handle
 			can be useful to anyone who needs to use ODBC ISO API
 			Along with TinyODBC.
+		@return Actual used ODBC statement handle for this instance.
 		*/
 		HDBC native_stmt_handle()
 		{
@@ -684,7 +687,7 @@ namespace tiodbc
 
 		//! Reset parameters (unbind all parameters)
 		/**
-			It will remove (unbind) all the setted
+			It will remove (unbind) all the assigned
 			parameters of the prepared statement.
 
 			In case that this is not a prepared statement

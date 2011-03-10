@@ -7,12 +7,10 @@ project (tiodbc)
 set (tiodbc_VERSION_MAJOR 1)
 set (tiodbc_VERSION_MINOR 0)
  
-# configure a header file to pass some of the CMake settings
-# to the source code
-#configure_file (
-#  "${PROJECT_SOURCE_DIR}/TutorialConfig.h.in"
-#  "${PROJECT_BINARY_DIR}/TutorialConfig.h"
-#  )
- 
-# add the executable
+# Target library
 add_library(tiodbc SHARED tiodbc.cpp)
+
+# Install target
+install (TARGETS tiodbc DESTINATION lib)
+install (FILES tiodbc.hpp DESTINATION include)
+
