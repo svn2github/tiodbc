@@ -7,8 +7,8 @@
  - <i>Name</i>: <b>TinyODBC</b>
  - <i>Licence</i>: <b>MIT Licence</b>
  - <i>Home Page</i>: <b>http://tiodbc.googlecode.com</b>
- - Copyright (c) 2008 SqUe
- - <i>Platforms</i>: Any Windows NT based platform.
+ - Copyright (c) 2008-2011 SqUe
+ - <i>Platforms</i>: Windows-NT based, *nix with iodbc.
 .
 
 @section intro Introduction to TinyODBC

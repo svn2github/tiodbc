@@ -3,7 +3,7 @@
     This file is part of project: TinyODBC
     TinyODBC is hosted under: http://code.google.com/p/tiodbc/
 
-    Copyright (c) 2008 SqUe <squarious _at_ gmail _dot_ com>
+    Copyright (c) 2008-2011 SqUe <squarious _at_ gmail _dot_ com>
 
     The MIT Licence
 
@@ -31,9 +31,15 @@
 #define _TIODBC_HPP_DEFINED_
 
 // System headers
+#ifdef _WIN32
 #include <windows.h>
+#else
+#define TCHAR char
+#endif
+
 #include <sql.h>
 #include <sqlext.h>
+#include <sqltypes.h>
 
 // STL Headers
 #include <string>
@@ -64,13 +70,16 @@ namespace tiodbc
 	//! Get current major version of TinyODBC library
 	/**
 		The major version is increased only when we
-		have major changes.*/
+		have major changes.
+	@return The actual version of the shared library.
+	*/
 	unsigned short version_major();
 
 	//! Get current minor version of TinyODBC library
 	/**
 		The minor version is increased when new features
 		are added/removed or API breakage occurs.
+	@return The actual version of the shared library.
 	*/
 	unsigned short version_minor();
 
@@ -78,6 +87,7 @@ namespace tiodbc
 	/**
 		The version revision number is changed only
 		for bug fixes.
+	@return The actual version of the shared library.
 	*/
 	unsigned short version_revision();
 
@@ -191,7 +201,9 @@ namespace tiodbc
 		@see native_evn_handle()
 		*/
 		HDBC native_dbc_handle()
-		{	return conn_h;	}
+		{
+			return conn_h;
+		}
 
 		//! Get native HENV handle
 		/**
@@ -203,7 +215,9 @@ namespace tiodbc
 		@see native_dbc_handle()
 		*/
 		HDBC native_evn_handle()
-		{	return env_h;	}
+		{
+			return env_h;
+		}
 
 		//! Get last error description
 		/**
@@ -251,7 +265,7 @@ namespace tiodbc
 		HSTMT stmt_h;			//!< Handle of statement that field exists
 		int col_num;			//!< Collumn number that field exists.
 		
-		// Not direct contructable
+		// Not direct constructible
 		field_impl(HSTMT _stmt, int _col_num);
 
 	public:
@@ -313,7 +327,7 @@ namespace tiodbc
 		char _int_buffer[64];	//!< Internal buffer for small built-in types (64byte ... quite large)
 		SQLINTEGER _int_SLOIP;	//!< Internal Str Length Or Indicator Pointer
 		
-		// Not direct contructable
+		// Not direct constructible
 		param_impl(HSTMT _stmt, int _par_num);
 
 	public:
@@ -327,7 +341,7 @@ namespace tiodbc
 		//! Destructor
 		~param_impl();
 
-		//! @name Value assignement functions
+		//! @name Value assignment functions
 		//! @{
 
 		//! Set parameter as string
@@ -384,10 +398,10 @@ namespace tiodbc
 		//! Construct and prepare
 		/**
 			It will construct and open a new statement at
-			a desired connectiona and prepare a query
+			a desired connection and prepare a query
 			on it. After the construction the statement
 			will be in open mode and will hold the prepared
-			statement. You can use it to execute the stament
+			statement. You can use it to execute the statement
 			multiple times, by passing (if any) different
 			parameters.
 		@param _conn The connection object to prepare the query
@@ -398,7 +412,7 @@ namespace tiodbc
 			server but it is temporary and will get deleted when
 			the connection is closed or the statement.
 
-			To check if the query was prepared succesfully you
+			To check if the query was prepared successfully you
 			can run is_open() after construction to see if it is
 			opened. If the preparation fails, you can use this
 			statement object to open other queries, direct or prepared.
@@ -437,7 +451,7 @@ namespace tiodbc
 		@remarks If there was an error opening a statement you can check
 			for detailed error description with connection::last_error()
 			of the connection object that you tried to open the connection and
-            <b>NOT</b> by calling statement::last_error() as a closed statemenet
+            <b>NOT</b> by calling statement::last_error() as a closed statement
 			is unable to do error reporting.
 		*/
 		bool open(connection & _conn);
@@ -457,19 +471,21 @@ namespace tiodbc
 			This is the <b>Statement</b>
 			handle that the object has allocated
 			internally with ODBC ISO API. This handle
-			can be usefull to anyone who needs to use ODBC ISO API
-			alogn with TinyODBC.
+			can be useful to anyone who needs to use ODBC ISO API
+			Along with TinyODBC.
 		*/
 		HDBC native_stmt_handle()
-		{	return stmt_h;	}
+		{
+			return stmt_h;
+		}
 
 		//! Get last error description
 		/**
-			Get the description of the error that occured
+			Get the description of the error that occurred
 			with the last function call.
-		@return If the last function call was succesfull it will
+		@return If the last function call was successful it will
 			return an empty string, otherwise it will return
-			the description of the error that occured inside
+			the description of the error that occurred inside
 			the ODBC driver.
 		@see last_error_status_code()
 		*/
@@ -477,13 +493,13 @@ namespace tiodbc
 
 		//! Get last error code
 		/**
-			Get the status of the error that occured
+			Get the status of the error that occurred
 			with the last function call.
-		@return If the last function call was succesfull it will
+		@return If the last function call was successful it will
 			return an empty string, otherwise it will return
-			the status code of the error that occured inside
+			the status code of the error that occurred inside
 			the ODBC driver.
-		@remarks The status codes are unique 5 legth strings that
+		@remarks The status codes are unique 5 length strings that
 			correspond to a unique error. For information of
 			this status code check ODBC API Reference (http://msdn.microsoft.com/en-us/library/ms716412(VS.85).aspx)
 			
@@ -508,7 +524,7 @@ namespace tiodbc
 		@param _conn The connection object to prepare the query
 			on it. Queries are always prepared on servers.
 		@param _stmt The sql query to prepare.
-		@return <b>True</b> if the preparation was succesfull or <b>False</b> if
+		@return <b>True</b> if the preparation was successful or <b>False</b> if
 			there was an error. In case of error check last_error() for detailed
 			description of error.
 
@@ -529,11 +545,11 @@ namespace tiodbc
 		@param _conn The connection object with the server where the
 			query will be executed at.
 		@param _query The sql query that will be execute at the server.
-		@return <b>True</b> if the execution was succesfull or <b>False</b> if
+		@return <b>True</b> if the execution was successful or <b>False</b> if
 			there was an error. In case of error check last_error() for detailed
 			description of problem.
 		@remarks
-			After a succesfull execution of a query, the result cursor is pointed
+			After a successful execution of a query, the result cursor is pointed
 			one slot before first row. To get the results of first row you 
 			must first call once fetch_next() and then use field() 
 			to get each field of the current row.
@@ -560,18 +576,18 @@ namespace tiodbc
 			
 			To execute a prepared query there are some preconditions
 			that must be satisfied.\n
-			- The statment must be opened and an sql query must have
+			- The statement must be opened and an sql query must have
 			been prepared.
 			- Any previous result set must be have been freed.
 			- All the parameters of the prepared statement must been passed
 			with param()
 
-		@return <b>True</b> if the prepared query was succesfully executed
+		@return <b>True</b> if the prepared query was successfully executed
 			or <b>False</b> if there was an error. In case of error 
 			check last_error() for detailed	description of problem.
 
 		@remarks
-			After a succesfull execution of a query, the result cursor is pointed
+			After a successfully execution of a query, the result cursor is pointed
 			one slot before first row. To get the results of first row you 
 			must first call once fetch_next() and then use field() 
 			to get each field of the current row.
@@ -590,7 +606,7 @@ namespace tiodbc
 			returns some results.
 
 		@return
-		- <b>True</b> if the cursor was advanced succesfully.
+		- <b>True</b> if the cursor was advanced successfully.
 		- <b>False</b> if the end of result set has been reached or
 			there isn't opened any result set.
 
